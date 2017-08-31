@@ -1,69 +1,99 @@
 const passport = require('passport');
+const bcrypt = require('bcryptjs');
+const models = require('../models');
 const LocalStrategy = require('passport-local').Strategy;
 
-const User = require('../models/user');
-
-
-passport.use('local-login', new LocalStrategy(
-  {passReqToCallback: true},
-  function(req, username, password, done) {
-    User.authenticate(username, password, function(err, user) {
-      if (err) {
-        return done(err)
-        console.log(err);
-      }
-      if (user) {
-        return done(null, user)
-      } else {
-        return done(null, false, {
-          message: "There is no user with that username and password."
-        })
-      }
-    })
-  }));
-
-passport.use('local-signup', new LocalStrategy(
-  {passReqToCallback: true},
-  function(req, username, password, done) {
-    var skills = req.body.skills.split(',');
-    User.signup({
-      name: req.body.name,
-      email: req.body.email,
-      skills: skills,
-      username: req.body.username,
-      avatar: req.body.avatar,
-      password: req.body.password,
-      university: req.body.university,
-      company: req.body.company,
-      phone: req.body.phone,
-      address: {
-        street_num: req.body.street_num,
-        street_name: req.body.street_name,
-        city: req.body.city,
-        state_or_province:req.body.state_or_province,
-        country: req.body.country,
-        postal_code: req.body.postal_code
-      }
-    }, function(err, user) {
-      if (err) {
-        return done(err)
-      }
-      if (user) {
-        return done(null, user)
-      } else {
-        return done(null, false, {
-          message: "There is already a user with username and password."
-        });
-      }
-    });
-  }
-));
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
+  models.User.findById(id).then(function(user) {
+    if (user) {
+      done(null, user.get());
+    } else {
+      done(user.errors, null);
+    }
   });
 });
+
+passport.use('local-login', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+  function(req, username, password, done) {
+
+    let isValidPassword = function(userpass, password) {
+      return bcrypt.compareSync(password, userpass);
+    }
+
+    models.User.findOne({
+      where: {
+        username: username
+      }
+    }).then(function(user) {
+      if (!user) {
+        return done(null, false, {
+          message: 'Username does not exists'
+        });
+      }
+
+      if (!isValidPassword(user.password, password)) {
+        return done(null, false, {
+          message: 'Incorrect password'
+        });
+      }
+
+      let userinfo = user.get();
+      return done(null, userinfo);
+    }).catch(function(err) {
+      console.log("error:", err);
+
+      return done(null, false, {
+        message: 'Something went wrong with your sign-in'
+      });
+    });
+
+  }
+));
+
+
+passport.use('local-signup', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+  function(req, username, password, done) {
+    let generateHash = function(password) {
+      return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+    };
+
+    models.User.findOne({
+      where: {
+        username: username
+      }
+    }).then(function(user) {
+      if (user) {
+        return done(null, false, {
+          message: 'That username is already taken'
+        });
+      } else {
+        let userPassword = generateHash(password);
+        let data = {
+          username: username,
+          password: userPassword
+        };
+
+        models.User.create(data).then(function(newUser, created) {
+          if (!newUser) {
+            return done(null, false);
+          }
+          if (newUser) {
+            return done(null, newUser);
+          }
+        });
+      }
+    });
+  }
+));

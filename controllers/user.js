@@ -12,8 +12,9 @@ var User = {
   },
 
   logout: function(req, res) {
-    req.logout();
-    res.redirect('/login');
+    req.session.destroy(function(err){
+      res.redirect('/');
+    });
   }
 
 

@@ -4,7 +4,7 @@ const passport = require('passport');
 const session = require('express-session');
 const flash = require('express-flash-messages');
 const bodyParser = require('body-parser');
-
+const models = require('./models');
 const routes = require('./router');
 
 
@@ -18,19 +18,22 @@ app.engine('handlebars', exphbs({
 app.set('view engine', 'handlebars');
 
 app.use('/static', express.static('public'));
-app.use(bodyParser.urlencoded({extended: false}));
+
+// for body parser
+app.use(bodyParser.urlencoded({extended: true}));
 
 // passport user auth config
 
 require('./controllers/passport');
 
 
-// middleware
+// for Passport
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
