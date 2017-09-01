@@ -1,4 +1,5 @@
 const models = require('../models');
+const moment = require('moment');
 
 GabbleController = {
   createForm: function(req, res) {
@@ -12,11 +13,13 @@ GabbleController = {
       ],
       order: [['createdAt', 'DESC']]
     }).then(function(posts){
-      posts.forEach(posts){
-        date= moment(post.createdAt, moment.ISO_8601).calendar();
-      }
-      console.log('user here', posts[0].User.dataValues.username);
-      res.render('profile/home', {posts: posts});
+      posts.forEach(function(post){
+        date = moment(post.createdAt, moment.ISO_8601).calendar();
+        post.posted = date;
+      });
+      user = req.user.username;
+      console.log("this is the currentu user", user);
+      res.render('profile/home', {posts: posts, user: user});
     });
 
   },
