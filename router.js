@@ -36,7 +36,8 @@ module.exports = function(app) {
     userRouter.get('/signup', UserController.signup);
     userRouter.get('/logout', UserController.logout);
     gabbleRouter.get('/home', isLoggedIn, GabbleController.home);
-    gabbleRouter.get('/create', isLoggedIn, GabbleController.create);
+    gabbleRouter.get('/create', isLoggedIn, GabbleController.createForm);
+    gabbleRouter.post('/create', GabbleController.create);
 
   app.use('/', userRouter);
   app.use('/gabble/', gabbleRouter);
