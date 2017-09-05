@@ -5,5 +5,10 @@
 <h2>{{User.dataValues.username}}</h2>
 <h2>{{post}}</h2>
 <h2>{{posted}}</h2>
+{{#if currentuser}}
+<a href="/gabble/delete">Delete</a>
+<a href="/gabble/edit">Edit</a>
+{{/if}}
+<a href="/gabble/like">Like</a>
 
 {{/each}}

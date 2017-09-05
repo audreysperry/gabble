@@ -18,7 +18,7 @@ GabbleController = {
         post.posted = date;
       });
       user = req.user.username;
-      console.log("this is the currentu user", user);
+      console.log("this is the current user", user);
       res.render('profile/home', {posts: posts, user: user});
     });
 
