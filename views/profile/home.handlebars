@@ -1,14 +1,17 @@
 <h2>Hey {{user}}</h2>
 
 {{#each posts}}
-
-<h2>{{User.dataValues.username}}</h2>
-<h2>{{post}}</h2>
-<h2>{{posted}}</h2>
-{{#if currentuser}}
-<a href="/gabble/delete">Delete</a>
-<a href="/gabble/edit">Edit</a>
-{{/if}}
-<a href="/gabble/like">Like</a>
+  <div>
+    <span>{{User.dataValues.username}}: </span>
+    <span>{{post}}</span>
+    <p>{{posted}}</p>
+    {{#if isCurrentUser}}
+    <a class="btn btn-warning" href="/gabble/delete">Delete</a>
+    <a class="btn btn-secondary" href="/gabble/edit">Edit</a>
+    {{/if}}
+    <a class="btn btn-primary" href="/gabble/{{id}}/like">Like</a>
+  </div>
+  <span>Likes: {{postLikes}}</span>  
+  <hr>
 
 {{/each}}
