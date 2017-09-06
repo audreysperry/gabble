@@ -16,7 +16,7 @@ Use Express and Sequelize to build a social network for students. This network, 
 
 * Be associated with a user who made the like and a message that was liked
 
-####The application should have ways to do the following:
+#### The application should have ways to do the following:
 
 * Sign up as a new user
 * Log in
