@@ -8,21 +8,15 @@ GabbleController = {
 
   home: function(req, res) {
     models.Post.findAll({
-      include: [{
-        model: models.User,
-        include: [{
-          model: models.Like,
-
-        }]
-
-      }],
+      include: [models.User, {model: models.Like, include: {model: models.User, as: "liker"}}],
       order: [['createdAt', 'DESC']]
     }).then(function(posts){
       posts.forEach(function(post){
         post.isCurrentUser = false;
-        console.log(post);
         date = moment(post.createdAt, moment.ISO_8601).calendar();
         post.posted = date;
+        // post.Likes = post.Likes.length;
+        // console.log(post.post, post.Likes);
         if (post.User.dataValues.username == req.user.username) {
           post.isCurrentUser = true;
         }

@@ -11,7 +11,12 @@
     {{/if}}
     <a class="btn btn-primary" href="/gabble/{{id}}/like">Like</a>
   </div>
-  <span>Likes: {{postLikes}}</span>  
+  <ul>
+    <span>Likes: {{Likes.length}}</span>
+    {{#each Likes}}
+    <li>{{liker.username}}</li>
+    {{/each}}
+  </ul>
   <hr>
 
 {{/each}}
