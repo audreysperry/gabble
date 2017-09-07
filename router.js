@@ -20,7 +20,7 @@ module.exports = function(app) {
 
   userRouter.post('/login/', passport.authenticate('local-login', {
         successRedirect: '/gabble/home',
-        failureRedirect: '/login/',
+        failureRedirect: '/',
         failureFlash: true
     }));
 

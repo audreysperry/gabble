@@ -76,3 +76,29 @@ GabbleController = {
 
 
  module.exports = GabbleController;
+
+
+ // 'use strict';
+ //
+ // module.exports = {
+ //   up: function (queryInterface, Sequelize) {
+ //     return queryInterface.changeColumn(
+ //       'Posts',
+ //       'userId',
+ //       {
+ //         type: Sequelize.INTEGER,
+ //         allowNull: true,
+ //         references: {
+ //           model: 'Users',
+ //           key: 'id'
+ //         },
+ //         onDelete: 'cascade',
+ //         onUpdate: 'cascade'
+ //       }
+ //     )
+ //   },
+ //
+ //   down: function (queryInterface, Sequelize) {
+ //     return queryInterface.
+ //   }
+ // };
