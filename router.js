@@ -41,6 +41,8 @@ module.exports = function(app) {
     gabbleRouter.get('/:id/like', GabbleController.like);
     gabbleRouter.get('/:id/delete', GabbleController.delete);
     gabbleRouter.get('/:id/likes', GabbleController.displayLikes);
+    gabbleRouter.get('/:id/edit', GabbleController.updateform);
+    gabbleRouter.post('/:id/update', GabbleController.update);
 
   app.use('/', userRouter);
   app.use('/gabble/', gabbleRouter);

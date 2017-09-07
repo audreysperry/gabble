@@ -65,6 +65,7 @@ passport.use('local-signup', new LocalStrategy({
     passReqToCallback: true
   },
   function(req, username, password, done) {
+    console.log("localsignup", username);
     let generateHash = function(password) {
       return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     };
@@ -74,11 +75,14 @@ passport.use('local-signup', new LocalStrategy({
         username: username
       }
     }).then(function(user) {
+      console.log("this is in the then", user);
       if (user) {
+        console.log("this looekd up the user", user);
         return done(null, false, {
           message: 'That username is already taken'
         });
       } else {
+        console.log("this is going to create user", user);
         let userPassword = generateHash(password);
         let data = {
           username: username,

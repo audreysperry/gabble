@@ -8,10 +8,18 @@ GabbleController = {
 
   home: function(req, res) {
     models.Post.findAll({
-      include: [models.User, {model: models.Like, include: {model: models.User, as: "liker"}}],
-      order: [['createdAt', 'DESC']]
-    }).then(function(posts){
-      posts.forEach(function(post){
+      include: [models.User, {
+        model: models.Like,
+        include: {
+          model: models.User,
+          as: "liker"
+        }
+      }],
+      order: [
+        ['createdAt', 'DESC']
+      ]
+    }).then(function(posts) {
+      posts.forEach(function(post) {
         post.isCurrentUser = false;
         date = moment(post.createdAt, moment.ISO_8601).calendar();
         post.posted = date;
@@ -20,19 +28,22 @@ GabbleController = {
         }
       });
       user = req.user.username;
-            res.render('profile/home', {posts: posts, user: user});
+      res.render('profile/home', {
+        posts: posts,
+        user: user
+      });
     });
 
   },
 
   create: function(req, res) {
-      let newPost = models.Post.create({
-        post: req.body.newGab,
-        userId: req.user.id
-      }).then(function(post) {
-        res.redirect('/gabble/home');
-      });
-    },
+    let newPost = models.Post.create({
+      post: req.body.newGab,
+      userId: req.user.id
+    }).then(function(post) {
+      res.redirect('/gabble/home');
+    });
+  },
 
 
   like: function(req, res) {
@@ -46,11 +57,17 @@ GabbleController = {
   },
 
   delete: function(req, res) {
-    models.Post.destroy({
+    models.Like.destroy({
       where: {
-        id: req.params.id
+        postId: req.params.id
       }
-    }).then(function(){
+    }).then(function() {
+      models.Post.destroy({
+        where: {
+          id: req.params.id
+        }
+      })
+    }).then(function() {
       res.redirect('/gabble/home');
     });
   },
@@ -61,13 +78,45 @@ GabbleController = {
       where: {
         id: id
       },
-        include: [models.User, {model: models.Like, include: {model: models.User, as: "liker"}}]
-    }).then(function(post){
+      include: [models.User, {
+        model: models.Like,
+        include: {
+          model: models.User,
+          as: "liker"
+        }
+      }]
+    }).then(function(post) {
       date = moment(post.createdAt, moment.ISO_8601).calendar();
       post.posted = date;
-        res.render('profile/likes', {post: post})
+      res.render('profile/likes', {
+        post: post
+      })
     })
-  }
+  },
+
+
+  updateform: function(req, res) {
+    id = req.params.id;
+
+    models.Post.findById(id).then(function(post){
+      res.render('profile/update', {post: post});
+    })
+  },
+
+    update: function(req, res) {
+      id = req.params.id;
+      console.log(id);
+      models.Post.update({
+        post: req.body.post,
+      }, {
+        where: {
+          id: id
+        },
+      }).then(function(user) {
+        res.redirect('/gabble/home');
+      })
+    }
+
 
 
 
@@ -75,30 +124,4 @@ GabbleController = {
 };
 
 
- module.exports = GabbleController;
-
-
- // 'use strict';
- //
- // module.exports = {
- //   up: function (queryInterface, Sequelize) {
- //     return queryInterface.changeColumn(
- //       'Posts',
- //       'userId',
- //       {
- //         type: Sequelize.INTEGER,
- //         allowNull: true,
- //         references: {
- //           model: 'Users',
- //           key: 'id'
- //         },
- //         onDelete: 'cascade',
- //         onUpdate: 'cascade'
- //       }
- //     )
- //   },
- //
- //   down: function (queryInterface, Sequelize) {
- //     return queryInterface.
- //   }
- // };
+module.exports = GabbleController;
