@@ -29,7 +29,7 @@ Use Express and Sequelize to build a social network for students. This network, 
 
 ## Deployed Demo Link
 
-Project hosted on heroku here: [View Project](insert here)
+Project hosted on heroku here: [View Project](https://gabble-aps.herokuapp.com/)
 
 
 ## Technologies Included
@@ -39,4 +39,3 @@ Project hosted on heroku here: [View Project](insert here)
 * Postgres
 * Passport
 * Heroku Deployment
-
