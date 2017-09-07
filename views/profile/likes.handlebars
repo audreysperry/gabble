@@ -1,0 +1,12 @@
+<h3>Post Details</h3>
+<div class="post-info">
+  <span class="username">{{post.User.dataValues.username}}: </span>
+  <span>{{post.dataValues.post}}</span>
+  <p>{{post.posted}}</p>
+</div>
+<h5>Liked By:</h5>
+</ul>
+{{#each post.Likes}}
+  <li>{{liker.username}}</li>
+{{/each}}
+</ul>

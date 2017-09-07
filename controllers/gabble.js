@@ -15,8 +15,6 @@ GabbleController = {
         post.isCurrentUser = false;
         date = moment(post.createdAt, moment.ISO_8601).calendar();
         post.posted = date;
-        // post.Likes = post.Likes.length;
-        // console.log(post.post, post.Likes);
         if (post.User.dataValues.username == req.user.username) {
           post.isCurrentUser = true;
         }
@@ -44,6 +42,30 @@ GabbleController = {
       postId: req.params.id
     }).then(function(like) {
       res.redirect('/gabble/home');
+    })
+  },
+
+  delete: function(req, res) {
+    models.Post.destroy({
+      where: {
+        id: req.params.id
+      }
+    }).then(function(){
+      res.redirect('/gabble/home');
+    });
+  },
+
+  displayLikes: function(req, res) {
+    let id = req.params.id;
+    models.Post.findOne({
+      where: {
+        id: id
+      },
+        include: [models.User, {model: models.Like, include: {model: models.User, as: "liker"}}]
+    }).then(function(post){
+      date = moment(post.createdAt, moment.ISO_8601).calendar();
+      post.posted = date;
+        res.render('profile/likes', {post: post})
     })
   }
 

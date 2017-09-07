@@ -4,17 +4,32 @@
     <meta charset="utf-8">
     <title>Gabble</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/app.css">
+
 
   </head>
 
-  <nav>
-    <a href="/gabble/home">Gabble</a>
-    <a href="/gabble/create">Create a Gabble</a>
-    <a href="/login">Login</a>
-    <a href="/signup">Signup</a>
-    <a href="/logout">Logout</a>
+  <nav class = "navbar navbar-toggleable-md navbar-light bg-faded">
+    <img class="navbar-brand logo-image" src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Tokyoship_Talk_icon_2.svg" alt="">
+    <div class="navbar-nav">
+      <a class ="nav-item nav-link" href="/gabble/home">Home</a>
+      <a class ="nav-item nav-link" href="/gabble/create">Create a Gabble</a>
+      {{#if user}}
+      <a class ="nav-item nav-link" href="/logout">Logout</a>
+      {{else}}
+      <a class ="nav-item nav-link" href="/">Login</a>
+      <a class ="nav-item nav-link" href="/signup">Signup</a>
+      {{/if}}
+
+
+
+    </div>
+
   </nav>
   <body>
-    {{{body}}}
+    <div class="wrapper">
+      {{{body}}}
+    </div>
+
   </body>
 </html>

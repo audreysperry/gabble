@@ -1,0 +1,37 @@
+body {
+  font-family: 'avenir';
+}
+
+.logo-image {
+  max-width: 30px;
+}
+
+.wrapper {
+  padding: 20px 400px;
+  margin: 0 auto;
+}
+
+.posts {
+  margin: 0px 10px 10px 0px;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.edit-delete {
+  margin-bottom: 5px;
+}
+
+.date {
+  font-style: italic;
+  margin-bottom: 0px;
+}
+
+.post-info{
+  margin-right: 10px;
+}
+
+.likes-link {
+  color: #aaa;
+}
